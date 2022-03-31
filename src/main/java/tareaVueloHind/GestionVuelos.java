@@ -5,6 +5,7 @@
  */
 package tareaVueloHind;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -17,49 +18,54 @@ import java.util.TreeMap;
  */
 public class GestionVuelos {
     //crear una lista de vuelos
+    public static ArrayList<Vuelo> vuelos = new ArrayList<>();
 
-    public static Set<Vuelo> vuelos = new HashSet<>();
+    //metodo para generar los pasajeros por destino sin ordenar
+    public static Map<String, Integer> generaLosPasajerosPorDestino() {
+        Map<String, Integer> vuelosMap = new HashMap<>();
 
-    public static Map<Vuelo, Integer> generaLosPasajerosPorDestino() {
-        Map<Vuelo, Integer> vuelosMap = new HashMap<>();
-
-        for (Vuelo v : vuelos) {
-            vuelosMap.put(v, v.numeroPasajeros());
+        for (int i = 0; i <vuelos.size(); i++) {
+            if(vuelosMap.containsKey(vuelos.get(i).getCiudadDestino())){
+              int total=vuelosMap.get(vuelos.get(i).getCiudadDestino())+vuelos.get(i).numeroPasajeros();
+              vuelosMap.put(vuelos.get(i).getCiudadDestino(), total);
+            }else{
+                vuelosMap.put(vuelos.get(i).getCiudadDestino(), vuelos.get(i).numeroPasajeros());
+            }
         }
         return vuelosMap;
     }
 
     /*otro método donde repetimos el método anterior pero ordenando alfabéticamente por destino*/
-    public static Map<Vuelo, Integer> generaLosPasajerosPorDestinoOrdinar() {
-        Map<Vuelo, Integer> vuelosMapOrdenada = new TreeMap<>();
+    public static Map<String, Integer> generaLosPasajerosPorDestinoOrdinar() {
+        Map<String, Integer> vuelosMapordenada = new TreeMap<>();
 
-        for (Vuelo v : vuelos) {
-            vuelosMapOrdenada.put(v, v.numeroPasajeros());
+        for (int i = 0; i <vuelos.size(); i++) {
+            if(vuelosMapordenada.containsKey(vuelos.get(i).getCiudadDestino())){
+              int total=vuelosMapordenada.get(vuelos.get(i).getCiudadDestino())+vuelos.get(i).numeroPasajeros();
+              vuelosMapordenada.put(vuelos.get(i).getCiudadDestino(), total);
+            }else{
+                vuelosMapordenada.put(vuelos.get(i).getCiudadDestino(), vuelos.get(i).numeroPasajeros());
+            }
         }
-        return vuelosMapOrdenada;
+        return vuelosMapordenada;
     }
 
     /**/
-    public static Set<Pasajero> porCodigoVueloSaberPasajeros(String numeroVuelo) {
-        Map<Vuelo, Integer> vuelosMap = new HashMap<>();
+    public static Map<String,Set<Pasajero>> porCodigoVueloSaberPasajeros() {
+        Map<String,Set<Pasajero>> vuelosMapPasajeros = new HashMap<>();
         
         for (Vuelo v : vuelos) {
-            vuelosMap.put(v, v.numeroPasajeros());
+            vuelosMapPasajeros.put(v.getCodigoVuelo(), v.getPasajeros());
         }
 
-        for (Map.Entry<Vuelo, Integer> vuelos : vuelosMap.entrySet()) {
-            if (vuelos.getKey().getCodigoVuelo().equals(numeroVuelo)) {
-                return vuelos.getKey().getPasajeros();
-            }
-        }
-        return null;
+        return vuelosMapPasajeros;
     }
 
     //un método estático que genere un map que contenga para cada destino el número de pasajeros que llegan a ese destino de todos los vuelos
     public static void main(String[] args) {
 
         //crear Vuelos
-        Vuelo v1 = new Vuelo("EW2537", "Malaga", "Mallorca", 2, 200);
+        Vuelo v1 = new Vuelo("EW2537", "Malaga", "paris", 2, 200);
         Vuelo v2 = new Vuelo("GW1537", "Sevilla", "Paris", 3, 200);
         Vuelo v3 = new Vuelo("JG2438", "Sevilla", "Frankfort", 1.5, 200);
         Vuelo v4 = new Vuelo("KL1235", "Barcalona", "Budapest", 4, 200);
@@ -129,19 +135,27 @@ public class GestionVuelos {
         vuelos.add(v6);
 
         //mostrar el map
-        generaLosPasajerosPorDestino().forEach((vuelo, pasajeros) -> {
-            System.out.println(vuelo.getCiudadDestino() + " -- pasajeros: " + pasajeros);
+        //Metodo static para convertir en map sin ordenar
+        Map<String,Integer> vuelosMap = generaLosPasajerosPorDestino();
+        vuelosMap.forEach((vuelo,pasajeros)->{
+            System.out.println(vuelo+ " -- pasajeros: "+ pasajeros);
         });
+        
 
         //mostrar el map ordenada
         //otro método donde repetimos el método anterior pero ordenando alfabéticamente por destino
         System.out.println("\n map ordenada por cada destinacion numero pasajeros:");
         generaLosPasajerosPorDestinoOrdinar().forEach((vuelo, pasajeros) -> {
-            System.out.println(vuelo.getCiudadDestino() + " -- pasajeros: " + pasajeros);
+            System.out.println(vuelo + " -- pasajeros: " + pasajeros);
         });
 
         //el tercer método debe de permitir saber por código de vuelo los pasajeros que hay
-        System.out.println("\nlos pasajeros del Vuelo 'EW2537' son: \n");
-        porCodigoVueloSaberPasajeros("EW2537").forEach(System.out::println);
+        System.out.println("\n los pasajeros de cada Vuelo son: \n");
+        
+        Map<String,Set<Pasajero>> mapPasajeros = porCodigoVueloSaberPasajeros();
+        mapPasajeros.forEach((codVuelo,pasajeros)->{
+            System.out.println("Vuelo: "+codVuelo+"\n");
+            pasajeros.forEach(System.out::println);
+        });
     }
 }

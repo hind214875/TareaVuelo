@@ -20,7 +20,7 @@ En el main se genera una lista de vuelos,  un método estático que genere un ma
 a ese destino de todos los vuelos, otro método donde repetimos el método anterior pero ordenando alfabéticamente por destino
 y el tercer método debe de permitir saber por código de vuelo los pasajeros que hay
  */
-public class Vuelo implements Comparable<Vuelo> {
+public class Vuelo  {
 //atributos
     private String codigoVuelo;
     private String ciudadOrigen;
@@ -99,7 +99,7 @@ public class Vuelo implements Comparable<Vuelo> {
     
     //metodos
     //numero pasajeros
-    public int numeroPasajeros(){
+    public  int numeroPasajeros(){
         return pasajeros.size();
     }
     
@@ -175,9 +175,6 @@ public class Vuelo implements Comparable<Vuelo> {
         return true;
     }
 
-    @Override
-    public int compareTo(Vuelo o) {
-        return this.ciudadDestino.compareTo(o.ciudadDestino);
-    }
+  
     
 }
