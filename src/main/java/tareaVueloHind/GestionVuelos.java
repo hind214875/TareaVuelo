@@ -25,8 +25,7 @@ public class GestionVuelos {
         Map<String, Integer> vuelosMap = new HashMap<>();
         for (int i = 0; i < vuelos.size(); i++) {
             if (vuelosMap.containsKey(vuelos.get(i).getCiudadDestino())) {
-                int total = vuelosMap.get(vuelos.get(i).getCiudadDestino()) + vuelos.get(i).numeroPasajeros();
-                vuelosMap.put(vuelos.get(i).getCiudadDestino(), total);
+                vuelosMap.put(vuelos.get(i).getCiudadDestino(),vuelosMap.get(vuelos.get(i).getCiudadDestino()) + vuelos.get(i).numeroPasajeros());
             } else {
                 vuelosMap.put(vuelos.get(i).getCiudadDestino(), vuelos.get(i).numeroPasajeros());
             }
@@ -40,8 +39,7 @@ public class GestionVuelos {
 
         for (int i = 0; i < vuelos.size(); i++) {
             if (vuelosMapordenada.containsKey(vuelos.get(i).getCiudadDestino())) {
-                int total = vuelosMapordenada.get(vuelos.get(i).getCiudadDestino()) + vuelos.get(i).numeroPasajeros();
-                vuelosMapordenada.put(vuelos.get(i).getCiudadDestino(), total);
+                vuelosMapordenada.put(vuelos.get(i).getCiudadDestino(),vuelosMapordenada.get(vuelos.get(i).getCiudadDestino()) + vuelos.get(i).numeroPasajeros());
             } else {
                 vuelosMapordenada.put(vuelos.get(i).getCiudadDestino(), vuelos.get(i).numeroPasajeros());
             }
@@ -49,7 +47,7 @@ public class GestionVuelos {
         return vuelosMapordenada;
     }
 
-    /**/
+    
     public static Map<String, Set<Pasajero>> porCodigoVueloSaberPasajeros() {
         Map<String, Set<Pasajero>> vuelosMapPasajeros = new HashMap<>();
 
